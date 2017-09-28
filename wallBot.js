@@ -18,16 +18,14 @@ client.on("message", (message) => {
 
 determineCommand = function(message){
     console.log("Determining command");
-    console.log(message);
+    console.log(message.author.username);
 
     let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     let command = args.shift().toLowerCase();
 
-    console.log(command);
-
     switch (command){
         case COMMAND.help:
-            printHelpToChannel();
+            printHelpToChannel(message);
             break;
         case COMMAND.roll:
             break;
@@ -37,7 +35,14 @@ determineCommand = function(message){
 };
 
 
-printHelpToChannel = function() {
+printHelpToChannel = function(message) {
+    message.channel.send(".\n\n" +
+        "== Wall bot ==\n" +
+        "  The available commands are :\n" +
+        "    - !help       : shows this help interface\n" +
+        "    - !roll xdy   : roll a certain number of dice and sends the results back\n" +
+        "===========");
+
 };
 
 client.login(config.token);
