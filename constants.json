@@ -1,0 +1,6 @@
+{
+  "command":{
+    "help":"help",
+    "roll":"roll"
+  }
+}
