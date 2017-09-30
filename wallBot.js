@@ -48,6 +48,8 @@ printHelpToChannel = function (message) {
 rollDiceAndPrintToChannel = function (message, args) {
 
     let firstSetOfDice;
+    let results = [];
+    let totalSum = 0;
 
     try {
         firstSetOfDice = args.shift().toLowerCase();
@@ -66,24 +68,64 @@ rollDiceAndPrintToChannel = function (message, args) {
 
         let [numberOfDice, facesForDie, err] = firstSetOfDice.split(/d/);
 
+        if (numberOfDice.match(/[a-zA-Z]/) || facesForDie.match(/[a-zA-Z]/)) {
+            printRollDiceHelp(message);
+            return;
+        }
+
         if(err) {
             printRollDiceHelp(message);
             return;
         }
 
+        if(numberOfDice == 1) {
+
+        } else {
+
+        }
+
         console.log(numberOfDice);
         console.log(facesForDie);
 
-        let result = rollDie(facesForDie);
-
         for (let i = 0; i < numberOfDice; i++) {
             let result = rollDie(facesForDie);
-            message.channel.send(`You rolled ${result}`);
+            results.push(result);
+            totalSum += result;
         }
 
-    } catch (err) {
-        printRollDiceHelp(message)
+        // ----  Building the output string
+        let resultString = `${message.author.username} rolled ${firstSetOfDice}\n`;
+        let wasWere;
+        if (numberOfDice > 1) {
+            wasWere = "s were";
+        } else {
+            wasWere = " was";
+        }
 
+        let firstResultString = `The result${wasWere} [${results[0]}`;
+
+        if(numberOfDice > 1) {
+            for (let i = 1; i < results.length; i++) {
+                firstResultString += `, ${results[i]}`;
+            }
+        }
+
+        // -- appending closure
+
+        firstResultString += "].";
+
+        if(results.length > 1)
+        {
+            firstResultString += `\nFor a total of \`${totalSum}\``
+        }
+
+        resultString += firstResultString;
+
+        message.channel.send(resultString);
+
+    } catch (err) {
+        printRollDiceHelp(message);
+        console.error(err);
     }
 
 };
