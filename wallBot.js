@@ -68,7 +68,7 @@ rollDiceAndPrintToChannel = function (message, args) {
 
         let [numberOfDice, facesForDie, err] = firstSetOfDice.split(/d/);
 
-        if (numberOfDice.match(/[a-zA-Z]/) || facesForDie.match(/[a-zA-Z]/)) {
+        if (numberOfDice.match(/[^0-9]/) || facesForDie.match(/[^0-9]/)) {
             printRollDiceHelp(message);
             return;
         }
@@ -78,10 +78,8 @@ rollDiceAndPrintToChannel = function (message, args) {
             return;
         }
 
-        if(numberOfDice == 1) {
-
-        } else {
-
+        if (numberOfDice > config.maxNumberOfDicePerRoll || facesForDie > config.maxNumberOfDieFace) {
+            message.channel.send(`The maximum number of dice is ${config.maxNumberOfDicePerRoll} and the max number of faces for a die is ${config.maxNumberOfDieFace}`);
         }
 
         console.log(numberOfDice);
