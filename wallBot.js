@@ -31,8 +31,10 @@ determineCommand = function (message) {
             rollDiceAndPrintToChannel(message, args);
             break;
         default:
-            return;
+            break;
     }
+
+    console.log("DONE");
 };
 
 
@@ -80,6 +82,7 @@ rollDiceAndPrintToChannel = function (message, args) {
 
         if (numberOfDice > config.maxNumberOfDicePerRoll || facesForDie > config.maxNumberOfDieFace) {
             message.channel.send(`The maximum number of dice is ${config.maxNumberOfDicePerRoll} and the max number of faces for a die is ${config.maxNumberOfDieFace}`);
+            return;
         }
 
         console.log(numberOfDice);
