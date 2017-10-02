@@ -1,0 +1,6 @@
+{
+  "token": "yourAwesomeDiscordBotToken",
+  "prefix": "!",
+  "maxNumberOfDieFace": 1000,
+  "maxNumberOfDicePerRoll": 50
+}
