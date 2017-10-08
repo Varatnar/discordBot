@@ -15,6 +15,9 @@ class DiceRoller extends  GenericTask{
         console.info(`New DiceRoller task made by ${this.demandee}`)
     }
 
+    /**
+     * Main execute, will be run from main.
+     */
     execute() {
 
         this._determineDiceSet();
@@ -37,6 +40,11 @@ class DiceRoller extends  GenericTask{
         }
     }
 
+    /**
+     * Finding out what will be rolled, storing that data inside this object.
+     *
+     * @private
+     */
     _determineDiceSet() {
 
         let diceSet = this._args.shift().toLowerCase();
@@ -70,6 +78,9 @@ class DiceRoller extends  GenericTask{
     /**
      * Create a string with the results of the roll(s).
      *
+     * @param results Array of results
+     * @param totalSum The sum of that array
+     * @returns {string} Human readable presentation of results.
      * @private
      */
     _generateAnswerString(results, totalSum){
