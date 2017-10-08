@@ -11,21 +11,29 @@ class DiceRoller extends  GenericTask{
         if(this._args == undefined || this._args == null) {
             this._printInvalidTask()
         }
+
+        console.info(`New DiceRoller task made by ${this.demandee}`)
     }
 
     execute() {
+
         this._determineDiceSet();
 
-        if(!this._numberOfDie || !this._facesForDie) {
+        if(this._numberOfDie && this._facesForDie) {
 
             let results = [];
             let totalSum = 0;
 
             for (let i = 0; i < this._numberOfDie; i++) {
-                let result = this._rollDie(this._facesForDie);
+                let result = DiceRoller._rollDie(this._facesForDie);
                 results.push(result);
                 totalSum += result;
             }
+
+            console.info(`The results were ${results}`);
+            console.info(`Total was ${totalSum}`);
+
+            this._sendToIncomingChannel(this._generateAnswerString(results, totalSum));
         }
     }
 
@@ -52,8 +60,48 @@ class DiceRoller extends  GenericTask{
             return;
         }
 
+        this._diceSet = diceSet;
         this._numberOfDie = numberOfDice;
         this._facesForDie = facesForDie;
+
+        console.info(`The roll will be ${numberOfDice} dice with ${facesForDie} faces`)
+    }
+
+    /**
+     * Create a string with the results of the roll(s).
+     *
+     * @private
+     */
+    _generateAnswerString(results, totalSum){
+
+        let resultString = `${this.demandee} rolled ${this._diceSet}\n`;
+        let wasWere;
+        if (this._numberOfDie > 1) {
+            wasWere = "s were";
+        } else {
+            wasWere = " was";
+        }
+
+        let firstResultString = `The result${wasWere} [${results[0]}`;
+
+        if(this._numberOfDie > 1) {
+            for (let i = 1; i < results.length; i++) {
+                firstResultString += `, ${results[i]}`;
+            }
+        }
+
+        // -- appending closure
+
+        firstResultString += "].";
+
+        if(results.length > 1)
+        {
+            firstResultString += `\nFor a total of \`${totalSum}\``
+        }
+
+        resultString += firstResultString;
+
+        return resultString;
     }
 
     /**
@@ -63,7 +111,7 @@ class DiceRoller extends  GenericTask{
      * @returns {number} The result, between 1 and the number of side.
      * @private
      */
-    _rollDie = function(numberOfSide) {
+    static _rollDie(numberOfSide) {
         let max = Math.floor(numberOfSide);
         return Math.floor(Math.random() * (max)) + 1;
     };
