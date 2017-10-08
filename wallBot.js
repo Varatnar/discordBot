@@ -1,7 +1,12 @@
+// Imports
 const Discord = require("discord.js");
 const config = require("./config.json");
 
+const Help = require("./tasks/Help.js");
+
 const COMMAND = require("./constants.json").command;
+
+// End imports
 
 const client = new Discord.Client();
 
@@ -23,9 +28,11 @@ determineCommand = function (message) {
     let args = message.content.slice(config.prefix.length).trim().split(/ +/g);
     let command = args.shift().toLowerCase();
 
+    let task = null;
+
     switch (command) {
         case COMMAND.help:
-            printHelpToChannel(message);
+            task = new Help(message);
             break;
         case COMMAND.roll:
             rollDiceAndPrintToChannel(message, args);
@@ -34,17 +41,11 @@ determineCommand = function (message) {
             break;
     }
 
+    if(task != null) {
+        task.execute();
+    }
+
     console.log("DONE");
-};
-
-
-printHelpToChannel = function (message) {
-    message.channel.send(".\n\n" +
-        "== Wall bot ==\n" +
-        "  The available commands are :\n" +
-        "    - !help       : shows this help interface\n" +
-        "    - !roll xdy   : roll a certain number of dice and sends the results back\n" +
-        "===========");
 };
 
 rollDiceAndPrintToChannel = function (message, args) {
@@ -131,6 +132,12 @@ rollDiceAndPrintToChannel = function (message, args) {
 
 };
 
+/**
+ * Simulate a dice roll.
+ *
+ * @param numberOfSide Number of side of the die to roll
+ * @returns {number} The result, between 1 and the number of side.
+ */
 rollDie = function(numberOfSide) {
     let max = Math.floor(numberOfSide);
     return Math.floor(Math.random() * (max)) + 1;
