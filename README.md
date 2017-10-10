@@ -17,6 +17,6 @@ You might have noticed that the bot comes with a `config.json.dummy` file. You w
 
 1. Make sure you are in the same directory of your project and run the following command :
 ```bash
-$ node wallBot.js
+$ node wallBot.ts
 ```
 * After a few seconds you should see a `I am ready!` text appear.

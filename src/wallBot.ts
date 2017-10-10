@@ -1,5 +1,5 @@
 // Imports
-const Discord = require("discord.js");
+import * as Discord from 'discord.js';
 const config = require("./config.json");
 
 const Help = require("./tasks/Help");

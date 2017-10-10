@@ -1,4 +1,4 @@
-const GenericTask = require("./GenericTask.js");
+const GenericTask = require("./GenericTask");
 const config = require("../config.json");
 
 class DiceRoller extends  GenericTask{

@@ -1,4 +1,4 @@
-const GenericTask = require("./GenericTask.js");
+const GenericTask = require("./GenericTask.ts");
 
 class Help extends  GenericTask{
 
