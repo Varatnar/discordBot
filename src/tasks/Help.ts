@@ -1,9 +1,9 @@
-const GenericTask = require("./GenericTask.js");
+import { GenericTask } from "./GenericTask";
 
-class Help extends  GenericTask{
+export class Help extends GenericTask{
 
-    constructor(message) {
-        super(message)
+    constructor(message: any) {
+        super(message);
     }
 
     execute() {
@@ -18,5 +18,3 @@ class Help extends  GenericTask{
         this._sendToIncomingChannel(messageToSend);
     }
 }
-
-module.exports = Help;

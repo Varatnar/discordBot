@@ -13,10 +13,22 @@ $ npm install
 
 You might have noticed that the bot comes with a `config.json.dummy` file. You will have to rename this file to `config.json` and make sure to fill in your bot token.
 
+### Building the js code
+
+- You will have to run the following command to transpile the code :
+```bash
+$ npm run build
+```
+
+- You can also have the build be trigger every time the source code is modified; To watch the code run the following command :
+```bash
+$ npm run watch
+```
+
 ### Running the bot
 
-1. Make sure you are in the same directory of your project and run the following command :
+1. Make sure you have already built the project and run the following command :
 ```bash
-$ node wallBot.js
+$ npm run start
 ```
 * After a few seconds you should see a `I am ready!` text appear.

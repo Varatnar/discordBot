@@ -1,18 +1,26 @@
-const GenericTask = require("./GenericTask.js");
-const config = require("../config.json");
+import { BotConfig } from "../bot/BotConfig";
+import { GenericTask } from "./GenericTask";
 
-class DiceRoller extends  GenericTask{
 
-    constructor(message, diceInfo) {
+export class DiceRoller extends GenericTask {
+
+    private _args: any;
+    private _numberOfDie: number;
+    private _facesForDie: number;
+    private _diceSet: number;
+
+    private config: BotConfig = require("./../config.json");
+
+    constructor(message: any, diceInfo: any) {
         super(message);
 
         this._args = diceInfo;
 
-        if(this._args == undefined || this._args == null) {
+        if (this._args == undefined || this._args == null) {
             this._printInvalidTask()
         }
 
-        console.info(`New DiceRoller task made by ${this.demandee}`)
+        console.info(`New DiceRoller task made by ${this.getDemandee()}`)
     }
 
     /**
@@ -22,7 +30,7 @@ class DiceRoller extends  GenericTask{
 
         this._determineDiceSet();
 
-        if(this._numberOfDie && this._facesForDie) {
+        if (this._numberOfDie && this._facesForDie) {
 
             let results = [];
             let totalSum = 0;
@@ -50,7 +58,7 @@ class DiceRoller extends  GenericTask{
         let diceSet = this._args.shift().toLowerCase();
 
         // The was nothing given to the task that identified to possible dice
-        if (diceSet == null || diceSet== undefined || !diceSet.includes("d")) {
+        if (diceSet == null || diceSet == undefined || !diceSet.includes("d")) {
             this._printInvalidTask();
             return;
         }
@@ -63,7 +71,7 @@ class DiceRoller extends  GenericTask{
             return;
         }
 
-        if (numberOfDice > config.maxNumberOfDicePerRoll || facesForDie > config.maxNumberOfDieFace) {
+        if (numberOfDice > this.config.maxNumberOfDicePerRoll || facesForDie > this.config.maxNumberOfDieFace) {
             this._printInvalidTask(1);
             return;
         }
@@ -83,9 +91,9 @@ class DiceRoller extends  GenericTask{
      * @returns {string} Human readable presentation of results.
      * @private
      */
-    _generateAnswerString(results, totalSum){
+    _generateAnswerString(results: any, totalSum: any) {
 
-        let resultString = `${this.demandee} rolled ${this._diceSet}\n`;
+        let resultString = `${this.getDemandee()} rolled ${this._diceSet}\n`;
         let wasWere;
         if (this._numberOfDie > 1) {
             wasWere = "s were";
@@ -95,7 +103,7 @@ class DiceRoller extends  GenericTask{
 
         let firstResultString = `The result${wasWere} [${results[0]}`;
 
-        if(this._numberOfDie > 1) {
+        if (this._numberOfDie > 1) {
             for (let i = 1; i < results.length; i++) {
                 firstResultString += `, ${results[i]}`;
             }
@@ -105,8 +113,7 @@ class DiceRoller extends  GenericTask{
 
         firstResultString += "].";
 
-        if(results.length > 1)
-        {
+        if (results.length > 1) {
             firstResultString += `\nFor a total of \`${totalSum}\``
         }
 
@@ -122,7 +129,7 @@ class DiceRoller extends  GenericTask{
      * @returns {number} The result, between 1 and the number of side.
      * @private
      */
-    static _rollDie(numberOfSide) {
+    static _rollDie(numberOfSide: any) {
         let max = Math.floor(numberOfSide);
         return Math.floor(Math.random() * (max)) + 1;
     };
@@ -133,22 +140,20 @@ class DiceRoller extends  GenericTask{
      * @param errorCode Can change the invalid task message depending on its value
      * @private
      */
-    _printInvalidTask(errorCode) {
+    _printInvalidTask(errorCode?: any) {
 
         const invalidMessageGeneric =
             "Please provide a proper dice set to be rolled"
         ;
 
         const invalidNumberComparedToConfig =
-            `The maximum number of dice is ${config.maxNumberOfDicePerRoll} and the max number of faces for a die is ${config.maxNumberOfDieFace}`
+            `The maximum number of dice is ${this.config.maxNumberOfDicePerRoll} and the max number of faces for a die is ${this.config.maxNumberOfDieFace}`
         ;
 
-        if(errorCode == 1) {
+        if (errorCode == 1) {
             this._sendToIncomingChannel(invalidNumberComparedToConfig)
         } else {
             this._sendToIncomingChannel(invalidMessageGeneric);
         }
     }
 }
-
-module.exports = DiceRoller;
