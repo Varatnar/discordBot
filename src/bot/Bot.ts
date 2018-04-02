@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 import * as discord from 'discord.js'
 import { BotConfig } from "./BotConfig";
 import { BotLogger } from "./BotLogger";
@@ -28,7 +29,7 @@ export class Bot {
             this.logger.info('I am ready!')
         });
 
-        this.client.on('message', (message) => {
+        this.client.on('message', (message: Message) => {
             if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
             this.determineCommand(message);
@@ -38,7 +39,7 @@ export class Bot {
         this.client.login(this.config.token);
     }
 
-    private determineCommand(message: any) {
+    private determineCommand(message: Message) {
         this.logger.info(`Determining command made by ${message.author.username}`);
         let args = message.content.slice(this.config.prefix.length).trim().split(/ +/g);
         let command = args.shift().toLowerCase();

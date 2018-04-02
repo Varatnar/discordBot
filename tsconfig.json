@@ -3,9 +3,17 @@
     "target": "es6",
     "module": "commonjs",
     "outDir": "./dist",
-    "strict": true,
+    "strict": false,
     "removeComments": true,
     "strictPropertyInitialization": false,
-    "inlineSourceMap": true
-  }
+    "sourceMap": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true
+  },
+  "include": [
+    "src/**/*"
+  ],  "exclude": [
+    "node_modules",
+    "**/*.sepc.ts"
+  ]
 }

@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 import { BotConfig } from "../bot/BotConfig";
 import { GenericTask } from "./GenericTask";
 
@@ -11,7 +12,7 @@ export class DiceRoller extends GenericTask {
 
     private config: BotConfig = require("./../config.json");
 
-    constructor(message: any, diceInfo: any) {
+    constructor(message: Message, diceInfo: any) {
         super(message);
 
         this._args = diceInfo;
