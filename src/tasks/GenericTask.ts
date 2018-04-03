@@ -1,3 +1,4 @@
+import { Message } from "discord.js";
 
 export class GenericTask {
 
@@ -5,7 +6,7 @@ export class GenericTask {
     private channel: any;
     private demandee: any;
 
-    constructor(message: any) {
+    constructor(message: Message) {
         this.message = message;
         this.channel = message.channel;
         this.demandee = message.author.username;
@@ -15,7 +16,7 @@ export class GenericTask {
         throw "Abstract method not implemented !!!";
     }
 
-    _sendToIncomingChannel(messageToSend: any) {
+    _sendToIncomingChannel(messageToSend: string) {
         this.channel.send(messageToSend);
     }
 

@@ -1,11 +1,11 @@
+import * as discord from "discord.js";
 import { Message } from "discord.js";
-import * as discord from 'discord.js'
-import { BotConfig } from "./BotConfig";
-import { BotLogger } from "./BotLogger";
 import { Command } from "../tasks/Command";
 import { DiceRoller } from "../tasks/DiceRoller";
-import { GenericTask } from "../tasks/GenericTask";
 import { Help } from "../tasks/Help";
+import { ImagePoster } from "../tasks/ImagePoster";
+import { BotConfig } from "./BotConfig";
+import { BotLogger } from "./BotLogger";
 
 export class Bot {
 
@@ -30,6 +30,17 @@ export class Bot {
         });
 
         this.client.on('message', (message: Message) => {
+
+            this.logger.info(`Message found \n ${message.content}`);
+
+            // Arbitrary image identifier "%"
+            if (message.content.startsWith("%")) {
+                let messageKey = message.content.slice("%".length).trim();
+
+                ImagePoster.postImageFromKey(message, messageKey);
+
+            }
+
             if (!message.content.startsWith(config.prefix) || message.author.bot) return;
 
             this.determineCommand(message);
@@ -54,10 +65,9 @@ export class Bot {
                     new DiceRoller(message, args).execute();
                     break;
                 default:
-                    new GenericTask(message).execute();
                     break;
             }
-        } catch(e) {
+        } catch (e) {
             this.logger.error(e);
         }
 

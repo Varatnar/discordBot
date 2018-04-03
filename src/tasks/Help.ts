@@ -1,8 +1,9 @@
+import { Message } from "discord.js";
 import { GenericTask } from "./GenericTask";
 
-export class Help extends GenericTask{
+export class Help extends GenericTask {
 
-    constructor(message: any) {
+    constructor(message: Message) {
         super(message);
     }
 
